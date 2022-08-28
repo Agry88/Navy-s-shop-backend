@@ -34,3 +34,6 @@ Content-Type:application/json
     "specifications":"淨重300g",
     "delivery_way":"店面選購、冷凍宅配、校內限定公文車交換"
 }
+
+###
+GET https://navys-shop-backend.herokuapp.com:3000/api/products

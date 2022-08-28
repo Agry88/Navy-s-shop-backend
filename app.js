@@ -15,4 +15,4 @@ const productsRouter = require("./routes/products");
 app.use("/api/products",productsRouter);
 
 ///設定Server的Port
-app.listen(3000 , () => console.log("server started"))
+app.listen(process.env.PORT || 3000, process.env.YOUR_HOST || '0.0.0.0' , () => console.log("server started"))
