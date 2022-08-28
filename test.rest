@@ -1,0 +1,36 @@
+###
+GET http://localhost:3000/api/products
+
+### Get certain product
+GET http://localhost:3000/api/products/630b289d6b2afa8d56858f09
+
+
+### Add new products
+POST http://localhost:3000/api/products
+Content-Type:application/json
+
+{
+    "name":"香椒麻麻耗",
+    "price":"200",
+    "image":"image url here",
+    "describe":"高科大出產的椒麻口味香腸",
+    "specifications":"淨重300g",
+    "delivery_way":"店面選購、冷凍宅配、校內限定公文車交換"
+}
+
+### Remove certain product
+DELETE  http://localhost:3000/api/products/630b1d2960c70b97bd7c1162
+
+
+### Update certain product
+PATCH  http://localhost:3000/api/products/630b1cb584428c46083ac825
+Content-Type:application/json
+
+{
+    "name":"香椒麻麻耗2",
+    "price":"200",
+    "image":"image url here",
+    "describe":"高科大出產的椒麻口味香腸",
+    "specifications":"淨重300g",
+    "delivery_way":"店面選購、冷凍宅配、校內限定公文車交換"
+}
