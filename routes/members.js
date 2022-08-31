@@ -81,7 +81,7 @@ router.get("/verify/:create_token", getMemberByToken, async (req, res) => {
         res.json(updateMember);
     } catch (err) {
         //資料庫更新錯誤回傳400及錯誤訊息
-        res.status(400).json({ message: "Update Member failed" }) //更新失敗
+        res.status(400).json({ message: "Update Member failed" , error:err }) //更新失敗
     }
 })
 
