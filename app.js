@@ -14,5 +14,8 @@ app.use(express.json());
 const productsRouter = require("./routes/products");
 app.use("/api/products",productsRouter);
 
+const membersRouter = require("./routes/members");
+app.use("/api/members",membersRouter);
+
 ///設定Server的Port
 app.listen(process.env.PORT || 3000, process.env.YOUR_HOST || '0.0.0.0' , () => console.log("server started"))

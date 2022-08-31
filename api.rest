@@ -34,3 +34,23 @@ Content-Type:application/json
     "specifications":"淨重300g",
     "delivery_way":"店面選購、冷凍宅配、校內限定公文車交換"
 }
+
+### 創建會員並發送驗證信
+
+POST https://navys-shop-backend.herokuapp.com/api/members/send
+Content-Type:application/json
+
+{
+    "email":"C109156135@nkust.edu.tw",
+    "password":"asd45628",
+    "name":"嗡嗡嗡",
+    "address":"高科大出產的椒麻口味香腸",
+    "phone_number":"0977"
+}
+
+### 檢視所有會員
+GET https://navys-shop-backend.herokuapp.com/api/members
+
+### 刪除會員
+
+DELETE  https://navys-shop-backend.herokuapp.com/api/members/630f192e62942fe3ba23b7ef
