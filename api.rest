@@ -53,4 +53,4 @@ GET https://navys-shop-backend.herokuapp.com/api/members
 
 ### 刪除會員
 
-DELETE  https://navys-shop-backend.herokuapp.com/api/members/630f192e62942fe3ba23b7ef
+DELETE  https://navys-shop-backend.herokuapp.com/api/members/630f1a1362942fe3ba23b7fc
