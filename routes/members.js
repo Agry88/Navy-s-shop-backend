@@ -106,7 +106,7 @@ router.delete("/:id", async (req, res) => {
 async function getMemberByToken(req, res, next) {
     let member;
     try {
-        member = await Members.find({ create_token: req.params.create_token });
+        member = await Members.findOne({ create_token: req.params.create_token });
         if (member === undefined) {
             return res.status(404).json({ message: "Can't find member" })
         }
