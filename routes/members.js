@@ -76,6 +76,7 @@ router.post("/send", async (req, res) => {
 //Middleware確認認證會員的token是否有效 將會員的is_activated改成true
 router.get("/verify/:create_token", getMemberByToken, async (req, res) => {
     res.member.is_activated = true
+    console.log(res.member)
     try {
         const updateMember = await res.member.save();
         res.json(updateMember);
