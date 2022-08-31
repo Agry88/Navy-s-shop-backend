@@ -50,7 +50,7 @@ Content-Type:application/json
 
 ### 驗證會員
 
-PATCH https://navys-shop-backend.herokuapp.com/api/members/verify/ef9ef1d9-c348-4ca2-b788-1d8122aa8b3d
+GET https://navys-shop-backend.herokuapp.com/api/members/verify/ef9ef1d9-c348-4ca2-b788-1d8122aa8b3d
 
 ### 檢視所有會員
 GET https://navys-shop-backend.herokuapp.com/api/members
