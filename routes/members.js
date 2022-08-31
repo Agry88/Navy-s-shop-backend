@@ -3,6 +3,7 @@ const router = express.Router();
 const Members = require("../models/members");
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
 
 //宣告發信物件
 const transporter = nodemailer.createTransport({
@@ -29,7 +30,7 @@ router.get("/", async (req, res) => {
 //發送認證信件 並創建會員
 router.post("/send", async (req, res) => {
     try {
-        const create_token = uuidv4()
+        const create_token = jwt.sign({email: req.body.email}, process.env.JWT_SECRET_KEY);
 
         //信件內容
         const options = {
@@ -58,7 +59,6 @@ router.post("/send", async (req, res) => {
             name: req.body.name,
             address: req.body.address,
             phone_number: req.body.phone_number,
-            create_token: create_token
         });
         try {
             const newmembers = await members.save();
@@ -74,7 +74,7 @@ router.post("/send", async (req, res) => {
 })
 
 //Middleware確認認證會員的token是否有效 將會員的is_activated改成true
-router.get("/verify/:create_token", getMemberByToken, async (req, res) => {
+router.get("/verify/:create_token", checkToken, async (req, res) => {
     res.member.is_activated = true
     try {
         const updateMember = await res.member.save();
@@ -102,10 +102,11 @@ router.delete("/:id", async (req, res) => {
 })
 
 //檢查是否有該會員
-async function getMemberByToken(req, res, next) {
+async function checkToken(req, res, next) {
     let member;
     try {
-        member = await Members.findOne({ create_token: req.params.create_token });
+        const decoded = jwt.verify(req.params.create_token, process.env.JWT_SECRET_KEY);
+        member = await Members.findOne({ email: decoded.email });
         if (member === undefined) {
             return res.status(404).json({ message: "Can't find member" })
         }

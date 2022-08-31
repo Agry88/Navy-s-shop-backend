@@ -21,10 +21,6 @@ const memberSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    create_token: {
-        type: String,
-        required: true
-    },
     is_activated: {
         type: Boolean,
         default: false,
