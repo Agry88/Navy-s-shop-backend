@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Products = require("../models/products");
+const verifyToken_isAdmin = require('../middlewares/verifyToken_isAdmin')
+const verifyToken_isUser = require('../middlewares/verifyToken_isUser')
 
 //取得全部產品
 router.get("/", async (req, res) => {
@@ -14,7 +16,7 @@ router.get("/", async (req, res) => {
 })
 
 //新增產品
-router.post("/", async (req, res) => {
+router.post("/", verifyToken_isAdmin() , async (req, res) => {
     //從req.body中取出資料
     const products = new Products({
         name:req.body.name,
@@ -35,12 +37,12 @@ router.post("/", async (req, res) => {
 
 //檢視特定產品
 //在網址中傳入id用以查詢
-router.get("/:id", getProduct  ,async (req, res) => {
+router.get("/:id", getProduct , verifyToken_isAdmin()  ,async (req, res) => {
     res.send(res.product)
 })
 
 //刪除產品
-router.delete("/:id", getProduct, async (req, res) => {
+router.delete("/:id", getProduct, verifyToken_isAdmin(), async (req, res) => {
     try {
         //將取出的待辦事項刪除
         await res.product.remove();
@@ -53,7 +55,7 @@ router.delete("/:id", getProduct, async (req, res) => {
 })
 
 //更新產品
-router.patch("/:id", getProduct , async (req, res) => {
+router.patch("/:id", getProduct ,verifyToken_isAdmin(), async (req, res) => {
     res.product.name = req.body.name
     res.product.price = req.body.price
     res.product.image = req.body.image
