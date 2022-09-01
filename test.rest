@@ -43,14 +43,23 @@ Content-Type:application/json
 {
     "email":"C109156135@nkust.edu.tw",
     "password":"asd45628",
-    "name":"嗡嗡嗡",
-    "address":"高科大出產的椒麻口味香腸",
+    "name":"test",
+    "address":"test",
     "phone_number":"0977"
 }
 
 ### 檢視所有會員
 GET http://localhost:3000/api/members
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiLll6Hll6Hll6EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NjIwMjM4NzYsImV4cCI6MTY2MjkyMzg3Nn0.8Tq_huVynUjz1YYxe2RuyFfPUtLEQyphQTuIBNgbu44; Max-Age=900; Path=/; Expires=Thu, 01 Sep 2022 09:32:56 GMT; HttpOnly
+
+### 會員登入
+GET http://localhost:3000/api/members/login
+Content-Type:application/json
+
+{
+    "email":"C109156135@nkust.edu.tw"
+}
 
 ### 刪除會員
 
-DELETE  http://localhost:3000/api/members/630f192e62942fe3ba23b7ef
+DELETE  http://localhost:3000/api/members/630f5e31ddadc5db190ee9dc

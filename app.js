@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
+const cookieParser = require('cookie-parser'); 
+
 require('dotenv').config();
 
 mongoose.connect(process.env.DB_NAME);
@@ -10,6 +12,7 @@ db.on('err',err => console.log(err));
 
 db.once('open' , () => console.log('connected to database'));
 app.use(express.json());
+app.use(cookieParser());
 
 const productsRouter = require("./routes/products");
 app.use("/api/products",productsRouter);

@@ -21,6 +21,10 @@ const memberSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        required: true
+    },
     is_activated: {
         type: Boolean,
         default: false,

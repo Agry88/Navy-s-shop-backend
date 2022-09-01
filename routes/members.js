@@ -1,23 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const Members = require("../models/members");
-const nodemailer = require('nodemailer');
-const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
-
-//宣告發信物件
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // use SSL
-    auth: {
-        user: process.env.HOST_EMAIL,
-        pass: process.env.HOST_EMAIL_PASSWORD
-    }
-});
+const verifyToken_isAdmin = require('../middlewares/verifyToken_isAdmin')
+const sendSignUpEmail = require('../functions/sendSignUpEmail')
 
 //取得全部會員
-router.get("/", async (req, res) => {
+router.get("/", verifyToken_isAdmin(), async (req, res) => {
     try {
         const members = await Members.find();
         res.json(members);
@@ -30,28 +19,8 @@ router.get("/", async (req, res) => {
 //發送認證信件 並創建會員
 router.post("/send", async (req, res) => {
     try {
-        const create_token = jwt.sign({email: req.body.email}, process.env.JWT_SECRET_KEY);
-
-        //信件內容
-        const options = {
-            //寄件者
-            from: process.env.HOST_EMAIL,
-            //收件者
-            to: req.body.email,
-            //主旨
-            subject: '請點選連結來認證您在海軍商城的會員註冊', // Subject line
-            //嵌入 html 的內文
-            html: `<h2>親愛的會員您好：<br />感謝您註冊海軍商城會員<br/>請點擊下方連結完成電子信箱認證<br /><a href="https://navys-shop-backend.herokuapp.com/api/members/verify/${create_token}">請點這裡</a><br />不是您本人嗎?請直接忽略或刪除此信件，<br />如有問題請撥打客服專線0800-024-550，謝謝！</h2>`,
-        };
-
-        //發送郵件
-        transporter.sendMail(options, function (error, info) {
-            if (error) {
-                return console.log(error);
-            } else {
-                console.log('訊息發送: ' + info.response);
-            }
-        });
+        const send_email_res = await sendSignUpEmail(req.body.email)
+        if (send_email_res.status === 400) return
 
         const members = new Members({
             email: req.body.email,
@@ -59,13 +28,14 @@ router.post("/send", async (req, res) => {
             name: req.body.name,
             address: req.body.address,
             phone_number: req.body.phone_number,
+            role:"user"
         });
         try {
             const newmembers = await members.save();
             res.status(201).json(newmembers);
         } catch (err) {
             //錯誤訊息發生回傳400 代表使用者傳入錯誤的資訊
-            res.status(400).json({ message: err.message })
+            res.status(400).json({ message: err.message})
         }
     } catch (err) {
         //如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
@@ -81,12 +51,41 @@ router.get("/verify/:create_token", checkToken, async (req, res) => {
         res.json(updateMember);
     } catch (err) {
         //資料庫更新錯誤回傳400及錯誤訊息
-        res.status(400).json({ message: "Update Member failed" , error:err }) //更新失敗
+        res.status(400).json({ message: "Update Member failed", error: err }) //更新失敗
+    }
+})
+
+//登入會員
+router.get("/login", async (req, res) => {
+    try {
+        const member = await Members.findOne({ email: req.body.email });
+        if (!member) {
+            return res.status(404).json({ message: "Can't find member" })
+        }
+        const info = { user_name: member.name, role: member.role }
+        const token = jwt.sign(info, process.env.JWT_SECRET_KEY, { expiresIn: 1000 * 60 * 15 });
+        res.cookie('token', token, { maxAge: 1000 * 60 * 15, httpOnly: true });
+        res.json(token);
+    } catch (err) {
+        //如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
+        res.status(500).json({ message: err.message })
+    }
+})
+
+//登出會員
+router.get("/logout", async (req, res) => {
+    try {
+        return res
+            .clearCookie("token")
+            .status(200)
+            .json({ message: "Successfully logged out" });
+    } catch (err) {
+        res.status(500).json({ message: err.message })
     }
 })
 
 //刪除會員
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", verifyToken_isAdmin(),  async (req, res) => {
     try {
         const member = await Members.findById(req.params.id);
         if (member === undefined) {
@@ -97,7 +96,7 @@ router.delete("/:id", async (req, res) => {
         res.json({ message: "Delete member succeed" })
     } catch (err) {
         //資料庫操作錯誤將回傳500及錯誤訊息
-        res.status(500).json({ message: "remove product faild"})
+        res.status(500).json({ message: "remove product faild" })
     }
 })
 
