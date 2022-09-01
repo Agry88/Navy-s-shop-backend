@@ -17,7 +17,7 @@ router.get("/", verifyToken_isAdmin(), async (req, res) => {
 })
 
 //發送認證信件 並創建會員
-router.post("/send", async (req, res) => {
+router.post("/send", checkUserAccount ,async (req, res) => {
     try {
         const send_email_res = await sendSignUpEmail(req.body.email)
         if (send_email_res.status === 400) return
@@ -103,7 +103,7 @@ router.delete("/:id", verifyToken_isAdmin(),  async (req, res) => {
     }
 })
 
-//檢查是否有該會員
+//檢查是否有該會員byToken
 async function checkToken(req, res, next) {
     let member;
     try {
@@ -111,6 +111,20 @@ async function checkToken(req, res, next) {
         member = await Members.findOne({ email: decoded.email });
         if (member === undefined) {
             return res.status(404).json({ message: "Can't find member" })
+        }
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+    res.member = member
+    next();
+}
+
+async function checkUserAccount(req, res, next) {
+    let member;
+    try {
+        member = await Members.findOne({ email: req.body.email });
+        if (member) {
+            return res.status(400).json({ message: "This Email has being registered" })
         }
     } catch (err) {
         return res.status(500).json({ message: err.message })
