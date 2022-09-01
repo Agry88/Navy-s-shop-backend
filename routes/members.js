@@ -62,6 +62,9 @@ router.get("/login", async (req, res) => {
         if (!member) {
             return res.status(404).json({ message: "Can't find member" })
         }
+        if (member.password !== req.body.password) {
+            return res.status(404).json({ message: "Password is wrong" })
+        }
         const info = { user_name: member.name, role: member.role }
         const token = jwt.sign(info, process.env.JWT_SECRET_KEY, { expiresIn: 1000 * 60 * 15 });
         res.cookie('token', token, { maxAge: 1000 * 60 * 15, httpOnly: true });

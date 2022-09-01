@@ -57,7 +57,8 @@ GET http://localhost:3000/api/members/login
 Content-Type:application/json
 
 {
-    "email":"C109156135@nkust.edu.tw"
+    "email":"C109156135@nkust.edu.tw",
+    "password":"asd45628"
 }
 
 ### 刪除會員
