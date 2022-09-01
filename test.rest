@@ -1,10 +1,11 @@
-###
-GET http://localhost:3000/api/products
+### 取得全部產品
+GET http://localhost:3000/api/products/
+
+### 取得部分產品
+GET http://localhost:3000/api/products/p?page=1
 
 ### Get certain product
-GET http://localhost:3000/api/products/630b289d6b2afa8d56858f09
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiLll6Hll6Hll6EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NjIwMjM4NzYsImV4cCI6MTY2MjkyMzg3Nn0.8Tq_huVynUjz1YYxe2RuyFfPUtLEQyphQTuIBNgbu44; Max-Age=900; Path=/; Expires=Thu, 01 Sep 2022 09:32:56 GMT; HttpOnly
-
+GET http://localhost:3000/api/products/630b296af602d9b5b05b62b7
 
 ### Add new products
 POST http://localhost:3000/api/products
@@ -51,7 +52,6 @@ Content-Type:application/json
 
 ### 檢視所有會員
 GET http://localhost:3000/api/members
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiLll6Hll6Hll6EiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE2NjIwMjM4NzYsImV4cCI6MTY2MjkyMzg3Nn0.8Tq_huVynUjz1YYxe2RuyFfPUtLEQyphQTuIBNgbu44; Max-Age=900; Path=/; Expires=Thu, 01 Sep 2022 09:32:56 GMT; HttpOnly
 
 ### 會員登入
 GET http://localhost:3000/api/members/login

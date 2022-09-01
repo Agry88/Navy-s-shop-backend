@@ -15,6 +15,24 @@ router.get("/", async (req, res) => {
     }
 })
 
+//根據頁數取得部分商品
+router.get("/p", async (req, res) => {
+    const product_per_page = 20
+    const page = req.query.page ?? 1
+    try {
+        const products = await Products.find()
+        .limit(product_per_page)
+        .skip(product_per_page * (page - 1))
+        .sort({
+            createdDate: 'desc'
+        })
+        res.json(products);
+    } catch (err) {
+        //如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
+        res.status(500).json({ message: err.message })
+    }
+})
+
 //新增產品
 router.post("/", verifyToken_isAdmin() , async (req, res) => {
     //從req.body中取出資料
