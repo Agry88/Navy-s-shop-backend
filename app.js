@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
-const cookieParser = require('cookie-parser'); 
+const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ db.on('err',err => console.log(err));
 db.once('open' , () => console.log('connected to database'));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors())
 
 const productsRouter = require("./routes/products");
 app.use("/api/products",productsRouter);

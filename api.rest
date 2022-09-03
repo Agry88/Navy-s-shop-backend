@@ -58,3 +58,24 @@ GET https://navys-shop-backend.herokuapp.com/api/members
 ### 刪除會員
 
 DELETE  https://navys-shop-backend.herokuapp.com/api/members/630f433fb3acaed25a8b7371
+
+### 測試查看
+
+GET  https://navys-shop-backend.herokuapp.com/api/test/
+
+### 特定測試查看
+
+GET  https://navys-shop-backend.herokuapp.com/api/test/6313323864fb780a6edf74f3
+
+### 新增測試
+
+POST  https://navys-shop-backend.herokuapp.com/api/test/
+Content-Type:application/json
+
+{
+    "detail":"test"
+}
+
+### 測試刪除
+
+DELETE   https://navys-shop-backend.herokuapp.com/api/test/63133198c29ee5e89afb0860
