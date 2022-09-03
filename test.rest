@@ -65,3 +65,20 @@ Content-Type:application/json
 ### 刪除會員
 
 DELETE  http://localhost:3000/api/members/630f5e31ddadc5db190ee9dc
+
+### 測試查看
+
+GET  http://localhost:3000/api/test/
+
+### 新增測試
+
+POST  http://localhost:3000/api/test/
+Content-Type:application/json
+
+{
+    "detail":"test"
+}
+
+### 測試刪除
+
+DELETE   http://localhost:3000/api/test/63133198c29ee5e89afb0860

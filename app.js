@@ -20,5 +20,8 @@ app.use("/api/products",productsRouter);
 const membersRouter = require("./routes/members");
 app.use("/api/members",membersRouter);
 
+const testRouter = require("./routes/test");
+app.use("/api/test",testRouter);
+
 ///設定Server的Port
 app.listen(process.env.PORT || 3000, process.env.YOUR_HOST || '0.0.0.0' , () => console.log("server started"))
