@@ -14,7 +14,7 @@ const suppliersSchema = new mongoose.Schema({
         required:true,
     },
     supphone:{ 
-        type:number,
+        type:Number,
         required:true,
     },
     supemail:{ 
