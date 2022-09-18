@@ -7,8 +7,8 @@ const verifyToken_isUser = require('../middlewares/verifyToken_isUser')
 //取得全部供應商
 router.get("/", async (req, res) => {
     try {
-        const Suppliers = await Suppliers.find();
-        res.json(Suppliers);
+        const suppliers = await Suppliers.find();
+        res.json(suppliers);
     } catch (err) {
         //如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
         res.status(500).json({ message: err.message })
@@ -18,7 +18,8 @@ router.get("/", async (req, res) => {
 //新增供應商
 router.post("/", verifyToken_isAdmin() , async (req, res) => {
     //從req.body中取出資料
-    const Suppliers = new Suppliers({
+    const suppliers = new Suppliers({
+        supid:req.body.supid,
         supname:req.body.supname,
         supaddr:req.body.supaddr,
         supphone:req.body.supphone,
@@ -27,7 +28,7 @@ router.post("/", verifyToken_isAdmin() , async (req, res) => {
         supcontactman:req.body.supcontactman,
     });
     try {
-        const newSuppliers = await Suppliers.save();
+        const newSuppliers = await suppliers.save();
         res.status(201).json(newSuppliers);
     } catch (err) {
         //錯誤訊息發生回傳400 代表使用者傳入錯誤的資訊

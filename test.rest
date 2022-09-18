@@ -82,3 +82,23 @@ Content-Type:application/json
 ### 測試刪除
 
 DELETE   http://localhost:3000/api/test/63133198c29ee5e89afb0860
+
+### 供應商測試
+
+GET  http://localhost:3000/api/suppliers/
+
+### 供應商新增
+
+POST  http://localhost:3000/api/suppliers/
+Content-Type:application/json
+
+{
+        "supid":"123",
+        "supname":"123name",
+        "supaddr":"123addr",
+        "supphone":"099562846",
+        "supemail":"123mail",
+        "supworkarea":"123area",
+        "supcontactman":"123man"
+}
+
