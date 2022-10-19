@@ -10,7 +10,6 @@ on:
     branches: [ "master" ]
 
 env:
-  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   DB_NAME: ${{secrets.DB_NAME}}
   HOST_EMAIL: ${{secrets.HOST_EMAIL}}
   HOST_EMAIL_PASSWORD: ${{secrets.HOST_EMAIL_PASSWORD}}
