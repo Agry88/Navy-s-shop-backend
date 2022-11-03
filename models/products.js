@@ -21,10 +21,6 @@ const productsSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    delivery_way:{ 
-        type:String,
-        required:true,
-    },
     createdDate:{
         type: Date,
         default: Date.now,

@@ -53,7 +53,6 @@ router.post("/", verifyToken_isAdmin(),upload.single("image"),uploadBlob(),async
         image: res.product.image,
         describe: req.body.describe,
         specifications: req.body.specifications,
-        delivery_way: req.body.delivery_way,
     });
     try {
         const newproducts = await products.save();
@@ -89,7 +88,6 @@ router.patch("/:id", verifyToken_isAdmin(),getProduct, async (req, res) => {
     res.product.image = req.body.image
     res.product.describe = req.body.describe
     res.product.specifications = req.body.specifications
-    res.product.delivery_way = req.body.delivery_way
     try {
         const updateProduct = await res.product.save();
         res.json(updateProduct);
