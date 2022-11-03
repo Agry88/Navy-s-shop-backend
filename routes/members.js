@@ -17,7 +17,7 @@ router.get("/", verifyToken_isAdmin(), async (req, res) => {
 })
 
 //發送認證信件 並創建會員
-router.post("/send", checkUserAccount ,async (req, res) => {
+router.post("/signup", checkUserAccount ,async (req, res) => {
     try {
         const send_email_res = await sendSignUpEmail(req.body.email)
         if (send_email_res.status === 400) return
@@ -26,8 +26,6 @@ router.post("/send", checkUserAccount ,async (req, res) => {
             email: req.body.email,
             password: req.body.password,
             name: req.body.name,
-            address: req.body.address,
-            phone_number: req.body.phone_number,
             role:"user"
         });
         try {
@@ -48,10 +46,10 @@ router.get("/verify/:create_token", checkToken, async (req, res) => {
     res.member.is_activated = true
     try {
         const updateMember = await res.member.save();
-        res.json(updateMember);
+        res.status(200).send('註冊成功！您已經可以關閉這個頁面！');
     } catch (err) {
         //資料庫更新錯誤回傳400及錯誤訊息
-        res.status(400).json({ message: "Update Member failed", error: err }) //更新失敗
+        res.status(400).json({ message: "認證會員失敗，請重新再試一次", error: err }) //更新失敗
     }
 })
 
@@ -68,7 +66,7 @@ router.get("/login", async (req, res) => {
         const info = { user_name: member.name, role: member.role }
         const token = jwt.sign(info, process.env.JWT_SECRET_KEY, { expiresIn: 1000 * 60 * 15 });
         res.cookie('token', token, { maxAge: 1000 * 60 * 15, httpOnly: true });
-        res.json(token);
+        res.json({ message: "登入成功！" });
     } catch (err) {
         //如果資料庫出現錯誤時回報 status:500 並回傳錯誤訊息 
         res.status(500).json({ message: err.message })
