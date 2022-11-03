@@ -79,3 +79,9 @@ Content-Type:application/json
 ### 測試刪除
 
 DELETE   https://navys-shop-backend.herokuapp.com/api/test/63133198c29ee5e89afb0860
+
+### 在照片伺服器新增照片
+
+PUT https://lovegotestforblob.blob.core.windows.net/newcontainer/testfolder/test3.png?sp=racw&st=2022-10-30T06:02:48Z&se=2027-10-02T14:02:48Z&spr=https&sv=2021-06-08&sr=c&sig=np6cPLnxsS7wjViyyo%2FXmxFxZo%2B13PIfigCB3y%2F5jzA%3D
+x-ms-blob-type: BlockBlob
+Content-Disposition: form-data; name="image"; filename="test.png"
