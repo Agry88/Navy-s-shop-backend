@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Suppliers = require("../models/suppliers");
-const verifyToken_isAdmin = require('../middlewares/verifyToken_isAdmin')
-const verifyToken_isUser = require('../middlewares/verifyToken_isUser')
+const verifyToken = require('../middlewares/verifyToken')
 
 //取得全部供應商
 router.get("/", async (req, res) => {
@@ -16,7 +15,7 @@ router.get("/", async (req, res) => {
 })
 
 //新增供應商
-router.post("/", verifyToken_isAdmin() , async (req, res) => {
+router.post("/", verifyToken("admin") , async (req, res) => {
     //從req.body中取出資料
     const suppliers = new Suppliers({
         supid:req.body.supid,
@@ -38,12 +37,12 @@ router.post("/", verifyToken_isAdmin() , async (req, res) => {
 
 //檢視特定供應商
 //在網址中傳入id用以查詢
-router.get("/:id", getSupplier , verifyToken_isAdmin()  ,async (req, res) => {
+router.get("/:id", getSupplier , verifyToken("admin")  ,async (req, res) => {
     res.send(res.supplier)
 })
 
 //刪除供應商
-router.delete("/:id", getSupplier, verifyToken_isAdmin(), async (req, res) => {
+router.delete("/:id", getSupplier, verifyToken("admin"), async (req, res) => {
     try {
         //將取出的待辦事項刪除
         await res.supplier.remove();
@@ -56,7 +55,7 @@ router.delete("/:id", getSupplier, verifyToken_isAdmin(), async (req, res) => {
 })
 
 //更新供應商
-router.patch("/:id", getSupplier ,verifyToken_isAdmin(), async (req, res) => {
+router.patch("/:id", getSupplier ,verifyToken("admin"), async (req, res) => {
     res.supplier.supsupname = req.body.supsupname
     res.supplier.supaddr = req.body.supaddr
     res.supplier.supphone = req.body.supphone

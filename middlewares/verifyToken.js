@@ -12,17 +12,20 @@ async function verifyJWT(token,res) {
 }
 
 
-module.exports = function (options = {}) {
+module.exports = function (requiredrole = "user") {
     return function (req, res, next) {
         const token = req.cookies.token;
         verifyJWT(token,res)
             .then(decoded => {
-                if (decoded.role === "admin") {
+                if (requiredrole === "user" && (decoded.role === "admin" || decoded.role === "user")) {
                     next()
                     return
-                } else{
-                    return Promise.reject(new Error('Role Error'));
                 }
+                if (requiredrole === "admin" && decoded.role === "admin" ) {
+                    next()
+                    return
+                }
+                return Promise.reject(new Error('Role Error'));
                 
             })
             .catch(next);

@@ -2,11 +2,11 @@ const express = require("express");
 const router = express.Router();
 const Members = require("../models/members");
 const jwt = require('jsonwebtoken');
-const verifyToken_isAdmin = require('../middlewares/verifyToken_isAdmin')
+const verifyToken = require('../middlewares/verifyToken')
 const sendSignUpEmail = require('../functions/sendSignUpEmail')
 
 //取得全部會員
-router.get("/", verifyToken_isAdmin(), async (req, res) => {
+router.get("/", verifyToken("admin"), async (req, res) => {
     try {
         const members = await Members.find();
         res.json(members);
@@ -86,7 +86,7 @@ router.get("/logout", async (req, res) => {
 })
 
 //刪除會員
-router.delete("/:id", verifyToken_isAdmin(),  async (req, res) => {
+router.delete("/:id", verifyToken("admin"),  async (req, res) => {
     try {
         const member = await Members.findById(req.params.id);
         if (member === undefined) {

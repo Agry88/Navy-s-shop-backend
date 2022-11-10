@@ -4,13 +4,12 @@ const upload = multer()
 const express = require("express");
 const router = express.Router();
 const Products = require("../models/products");
-const verifyToken_isAdmin = require('../middlewares/verifyToken_isAdmin')
-const verifyToken_isUser = require('../middlewares/verifyToken_isUser')
+const verifyToken = require('../middlewares/verifyToken')
 const uploadBlob = require('../middlewares/uploadBlob')
 const removeBlob = require('../middlewares/removeBlob')
 
 //取得全部產品
-router.get("/", async (req, res) => {
+router.get("/", verifyToken("admin") ,async (req, res) => {
     try {
         const products = await Products.find();
         res.json(products);
@@ -39,7 +38,7 @@ router.get("/p", async (req, res) => {
 })
 
 //新增產品
-router.post("/", verifyToken_isAdmin(),upload.single("image"),uploadBlob(),async (req, res) => {
+router.post("/", verifyToken("admin"),upload.single("image"),uploadBlob(),async (req, res) => {
 
     //檢查是否有重複名稱的產品
     const product = await Products.find({ name: req.body.name })
@@ -65,12 +64,12 @@ router.post("/", verifyToken_isAdmin(),upload.single("image"),uploadBlob(),async
 
 //檢視特定產品
 //在網址中傳入id用以查詢
-router.get("/:id", getProduct, verifyToken_isAdmin(), async (req, res) => {
+router.get("/:id", getProduct, verifyToken("admin"), async (req, res) => {
     res.send(res.product)
 })
 
 //刪除產品
-router.delete("/:id", verifyToken_isAdmin(),getProduct,removeBlob(), async (req, res) => {
+router.delete("/:id", verifyToken("admin"),getProduct,removeBlob(), async (req, res) => {
     try {
         await res.product.remove();
         //回傳訊息
@@ -82,7 +81,7 @@ router.delete("/:id", verifyToken_isAdmin(),getProduct,removeBlob(), async (req,
 })
 
 //更新產品
-router.patch("/:id", verifyToken_isAdmin(),getProduct, async (req, res) => {
+router.patch("/:id", verifyToken("admin"),getProduct, async (req, res) => {
     res.product.name = req.body.name
     res.product.price = req.body.price
     res.product.image = req.body.image
