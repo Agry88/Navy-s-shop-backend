@@ -54,7 +54,7 @@ router.get("/verify/:create_token", checkToken, async (req, res) => {
 })
 
 //登入會員
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     try {
         const member = await Members.findOne({ email: req.body.email });
         if (!member) {
