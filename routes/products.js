@@ -41,7 +41,7 @@ router.get("/p", async (req, res) => {
 router.post("/", verifyToken("admin"),upload.single("image"),uploadBlob(),async (req, res) => {
 
     //檢查是否有重複名稱的產品
-    const product = await Products.find({ name: req.body.name })
+    const product = await Products.findOne({ name: req.body.name })
     if (product) {
         return res.status(403).json({ message: "已經有重複名稱的產品" })
     }
