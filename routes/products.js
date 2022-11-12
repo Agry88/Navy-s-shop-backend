@@ -9,7 +9,7 @@ const uploadBlob = require('../middlewares/uploadBlob')
 const removeBlob = require('../middlewares/removeBlob')
 
 //取得全部產品
-router.get("/", verifyToken("admin") ,async (req, res) => {
+router.get("/" ,async (req, res) => {
     try {
         const products = await Products.find();
         res.json(products);
